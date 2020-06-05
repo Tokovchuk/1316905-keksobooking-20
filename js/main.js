@@ -1,63 +1,119 @@
 // Const
 
-var TYPE = ["palace", "flat", "house", "bungalo"];
-var CHECKIN = ["12:00", "13:00", "14:00"];
-var CHECKOUT = ["12:00", "13:00", "14:00"];
+var TYPES = ["palace", "flat", "house", "bungalo"];
+var CHECKINS = ["12:00", "13:00", "14:00"];
+var CHECKOUTS = ["12:00", "13:00", "14:00"];
 var FEATURES = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"];
+var PHOTOS = ["http://o0.github.io/assets/images/tokyo/hotel1.jpg",
+   "http://o0.github.io/assets/images/tokyo/hotel2.jpg",
+   "http://o0.github.io/assets/images/tokyo/hotel3.jpg"]
 
-var allVariantsHousing = [];
-
-//  author
-for( var i = 0 ; i < 8; i++) {
- var author = {avatar : "img/avatars/user0"+ i +".png"};
-}
-
-// oofer
+var LOCATION_MIN_X = 100;
+var LOCATION_MAX_X = 1100;
+var LOCATION_MIN_Y = 130;
+var LOCATION_MAX_Y = 630;
+var ADS_NUMBER = 8;
 
 
 
-// location
+// случайное число в заданом диапазоне
 
-  // случайное число в заданом диапазоне
 var getRandomInt = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-var x = getRandomInt(min, max);   // Пока не знаю где взять min и max для X
-var y = getRandomInt(130, 630);
+// Случайный элемент массива
+
+var getRandomElement = function (items) {
+  var randomElement = Math.floor(Math.random() * items.length);
+  return items[randomElement];
+};
+
+// Перемешивание массива
+
+var shuffleArray = function (items) {
+  var itemsClone = items.slice();
+  var length = itemsClone.length;
+  for (var i = 0; i < length; i++) {
+    var j = getRandomInt(0, length - 1);
+    var swap = itemsClone[i];
+    itemsClone[i] = itemsClone[j];
+    itemsClone[j] = swap;
+  }
+  return itemsClone;
+};
 
 
-// случайный эл-т массива
+// Гененрируем итоговый массив объектов жилья
 
-var getRandomElementArray = function (arr) {
-    var randomElement = Math.floor(Math.random() * arr.length);
-    return arr[randomElement];
+var generateAds = function (number) {
+  var ads = [];
+  for (var i = 1; i <= number; i++) {
+    var locationX = getRandomInt(LOCATION_MIN_X, LOCATION_MAX_X);
+    var locationY = getRandomInt(LOCATION_MIN_Y, LOCATION_MAX_Y);
+    var ad = {
+      author: {
+        avatar: "img/avatars/user0"+ i +".png",
+      },
+      offer: {
+        title: "Название объекта",
+        address: locationX + ", " + locationY,
+        price: getRandomInt(1, 1000),
+        type: getRandomElement(TYPES),
+        rooms: getRandomInt(1, 4),
+        guests: getRandomInt(1, 6),
+        checkin: getRandomElement(CHECKINS),
+        checkout: getRandomElement(CHECKOUTS),
+        features: shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length)),
+        description: "Описание",
+        photos: shuffleArray(PHOTOS).slice(0, getRandomInt(1, PHOTOS.length)),
+      },
+      location: {
+        x: locationX,
+        y: locationY,
+      },
+    };
+    ads.push(ad);
+  }
+  return ads;
+};
+
+var ads = generateAds(ADS_NUMBER);
+
+// убираем  класс map--faded
+
+var switchingActiveMap = function() {
+  var map = document.querySelector(".map");
+  map.classList.remove("map--faded");
+};
+
+switchingActiveMap();
+
+// Создаем пины к нашим объктам жилья
+
+    // Находим темплейт
+var pinTemplate = document.querySelector("#pin")
+  .content
+  .querySelector(".map__pin");
+    
+    //Делаем пин из темплейта и добавляем нужные свойства
+var renderPin = function (housing) {
+  var pinElement = pinTemplate.cloneNode(true);
+  pinElement.style.left = housing.location.x - 25 + "px";
+  pinElement.style.top = housing.location.y - 35 + "px";
+  pinElement.children[0].src = housing.author.avatar;
+  pinElement.children[0].alt = housing.offer.title;
+  return pinElement;
 }
 
+// Добавляем пины на карту
+var mapPins = document.querySelector(".map__pins");
 
-Напишите функцию для создания массива из 8 сгенерированных JS-объектов. Каждый объект массива ‐ описание похожего объявления неподалёку. Структура объектов должна быть следующей:
+var fragment = document.createDocumentFragment();
 
-{
-    "author": {
-        "avatar": строка, адрес изображения вида img/avatars/user{{xx}}.png, где {{xx}} это число от 1 до 8 с ведущим нулём. Например, 01, 02 и т. д. Адреса изображений не повторяются
-    },
-    "offer": {
-        "title": строка, заголовок предложения
-        "address": строка, адрес предложения. Для простоты пусть пока представляет собой запись вида "{{location.x}}, {{location.y}}", например, "600, 350"
-        "price": число, стоимость
-        "type": строка с одним из четырёх фиксированных значений: palace, flat, house или bungalo
-        "rooms": число, количество комнат
-        "guests": число, количество гостей, которое можно разместить
-        "checkin": строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00,
-        "checkout": строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00
-        "features": массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner",
-        "description": строка с описанием,
-        "photos": массив строк случайной длины, содержащий адреса фотографий "http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"
-    },
-    "location": {
-        "x": случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
-        "y": случайное число, координата y метки на карте от 130 до 630.
-    }
+for (var i = 0; i < ads.length; i++) {
+  fragment.appendChild(renderPin(ads[i]));
 }
+mapPins.appendChild(fragment);
