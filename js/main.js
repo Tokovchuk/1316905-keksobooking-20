@@ -81,7 +81,7 @@ var generateAds = function (number) {
 
 // убираем  класс map--faded
 
-var switchesActiveMap = function () {
+var switchActiveMap = function () {
   var map = document.querySelector('.map');
   map.classList.remove('map--faded');
 };
@@ -104,19 +104,15 @@ var renderPin = function (housing) {
 
 // Добавляем пины на карту
 
-var addPinsToMap = function () {
+var addPinsToMap = function (items) {
   var mapPins = document.querySelector('.map__pins');
-
   var fragment = document.createDocumentFragment();
-
-  for (var i = 0; i < ads.length; i++) {
-    fragment.appendChild(renderPin(ads[i]));
-  }
+  items.forEach(function (ad) {
+    fragment.appendChild(renderPin(ad));
+  });
   mapPins.appendChild(fragment);
 };
 
 var ads = generateAds(ADS_NUMBER);
-
-switchesActiveMap();
-
-addPinsToMap();
+switchActiveMap();
+addPinsToMap(ads);
