@@ -13,6 +13,8 @@ var LOCATION_MAX_X = 1100;
 var LOCATION_MIN_Y = 130;
 var LOCATION_MAX_Y = 630;
 var ADS_NUMBER = 8;
+var MAP_PIN_WIDTH = 50;
+var MAP_PIN_HEIGHT = 70;
 
 // случайное число в заданом диапазоне
 
@@ -42,7 +44,6 @@ var shuffleArray = function (items) {
   }
   return itemsClone;
 };
-
 
 // Гененрируем итоговый массив объектов жилья
 
@@ -78,43 +79,44 @@ var generateAds = function (number) {
   return ads;
 };
 
-var ads = generateAds(ADS_NUMBER);
-
 // убираем  класс map--faded
 
-var switchingActiveMap = function () {
+var switchesActiveMap = function () {
   var map = document.querySelector('.map');
   map.classList.remove('map--faded');
 };
 
-switchingActiveMap();
-
 // Создаем пины к нашим объктам жилья
-
 // Находим темплейт
-
-var pinTemplate = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
-
 // Делаем пин из темплейта и добавляем нужные свойства
 
 var renderPin = function (housing) {
+  var pinTemplate = document.querySelector('#pin')
+  .content
+  .querySelector('.map__pin');
   var pinElement = pinTemplate.cloneNode(true);
-  pinElement.style.left = housing.location.x - 25 + 'px';
-  pinElement.style.top = housing.location.y - 35 + 'px';
-  pinElement.children[0].src = housing.author.avatar;
-  pinElement.children[0].alt = housing.offer.title;
+  pinElement.style.left = housing.location.x - MAP_PIN_WIDTH / 2 + 'px';
+  pinElement.style.top = housing.location.y - MAP_PIN_HEIGHT + 'px';
+  pinElement.querySelector('img').src = housing.author.avatar;
+  pinElement.querySelector('img').alt = housing.offer.title;
   return pinElement;
 };
 
 // Добавляем пины на карту
 
-var mapPins = document.querySelector('.map__pins');
+var addPinsToMap = function () {
+  var mapPins = document.querySelector('.map__pins');
 
-var fragment = document.createDocumentFragment();
+  var fragment = document.createDocumentFragment();
 
-for (var i = 0; i < ads.length; i++) {
-  fragment.appendChild(renderPin(ads[i]));
-}
-mapPins.appendChild(fragment);
+  for (var i = 0; i < ads.length; i++) {
+    fragment.appendChild(renderPin(ads[i]));
+  }
+  mapPins.appendChild(fragment);
+};
+
+var ads = generateAds(ADS_NUMBER);
+
+switchesActiveMap();
+
+addPinsToMap();
