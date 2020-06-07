@@ -139,17 +139,17 @@ cardPrice.textContent = item.offer.price + '₽/ночь';
 //
 var cardType = cardTemplate.querySelector('.popup__type');
 if (item.offer.type === 'flat') {
-  cardType.textContent = 'Квартира'
+  cardType.textContent = 'Квартира';
 }
 if (item.offer.type === 'bungalo') {
-  cardType.textContent = 'Бунгало'
+  cardType.textContent = 'Бунгало';
 }
 if (item.offer.type === 'house') {
-  cardType.textContent = 'Дом'
+  cardType.textContent = 'Дом';
 }
 if (item.offer.type === 'palace') {
-  cardType.textContent = 'Дворец'
-};
+  cardType.textContent = 'Дворец';
+}
 
 //
 var cardRoomsGuests = cardTemplate.querySelector('.popup__text--capacity');
@@ -158,14 +158,14 @@ var guests = item.offer.guests;
 
 // функция для регулирования окончания в слове "комната"
 var roomsFlexNormalize = function (number) {
-  var forms = ["комнат", "комната", "комнаты"];
-  return flexNormalize(number, forms);
+  var FORMS = ['комнат', 'комната', 'комнаты'];
+  return flexNormalize(number, FORMS);
 };
 
 // функция для регулирования окончания в слове "гость"
 var guestsFlexNormalize = function (number) {
-  var forms = ["гостей", "гостя", "гостей"];
-  return flexNormalize(number, forms);
+  var FORMS = ['гостей', 'гостя', 'гостей'];
+  return flexNormalize(number, FORMS);
 };
 
 var flexNormalize = function (number, forms) {
@@ -184,8 +184,8 @@ var flexNormalize = function (number, forms) {
   }
 };
 
-var textRooms = roomsFlexNormalize (rooms);
-var textGuests = guestsFlexNormalize (guests);
+var textRooms = roomsFlexNormalize(rooms);
+var textGuests = guestsFlexNormalize(guests);
 
 cardRoomsGuests.textContent = rooms + ' ' + textRooms + ' для ' + guests + ' ' + textGuests;
 
@@ -197,12 +197,11 @@ cardTime.textContent = 'Заезд после ' + item.offer.checkin + ', вые
 var cardFeatures = cardTemplate.querySelector('.popup__features');
 for (var i = cardFeatures.children.length - 1; i >= 0; i--) {
   var child = cardFeatures.children[i];
-  
   child.parentElement.removeChild(child);
 }
 var featuresItems = item.offer.features;
-featuresItems.forEach (function (features) {
-cardFeatures.insertAdjacentHTML('afterbegin', '<li class="popup__feature popup__feature--' + features + '"></li>');
+featuresItems.forEach(function (features) {
+  cardFeatures.insertAdjacentHTML('afterbegin', '<li class="popup__feature popup__feature--' + features + '"></li>');
 });
 
 
@@ -218,20 +217,13 @@ cardAvatar.src = item.author.avatar;
 var cardPhotos = cardTemplate.querySelector('.popup__photos');
 for (var i = cardPhotos.children.length - 1; i >= 0; i--) {
   var child = cardPhotos.children[i];
-  
   child.parentElement.removeChild(child);
 }
 var photosItems = item.offer.photos;
-photosItems.forEach (function (photos) {
-cardPhotos.insertAdjacentHTML('afterbegin', '<img src="' + photos + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">')
+photosItems.forEach(function (photos) {
+  cardPhotos.insertAdjacentHTML('afterbegin', '<img src="' + photos + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
 });
 
 var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters-container');
 map.insertBefore(cardTemplate, mapFilters);
-
-console.log(cardTemplate);
-
-
-
-
