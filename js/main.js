@@ -113,117 +113,115 @@ var addPinsToMap = function (items) {
   mapPins.appendChild(fragment);
 };
 
+// Создаем карточку объекта жилья
+
+
+var renderCard = function (item) {
+
+  var cardTemplate = document.querySelector('#card')
+    .content
+    .querySelector('.map__card');
+
+  //
+  var cardTitle = cardTemplate.querySelector('.popup__title');
+  cardTitle.textContent = item.offer.title;
+
+  //
+  var cardAddress = cardTemplate.querySelector('.popup__text--address');
+  cardAddress.textContent = item.offer.address;
+
+  //
+  var cardPrice = cardTemplate.querySelector('.popup__text--price');
+  cardPrice.textContent = item.offer.price + '₽/ночь';
+
+  //
+  var cardType = cardTemplate.querySelector('.popup__type');
+  var typesMap = {
+    'flat': 'квартира',
+    'bungalo': 'бунгало',
+    'house': 'дом',
+    'palace': 'дворец',
+  };
+  cardType.textContent = typesMap[item.offer.type];
+
+  //
+  var cardRoomsGuests = cardTemplate.querySelector('.popup__text--capacity');
+  var rooms = item.offer.rooms;
+  var guests = item.offer.guests;
+
+  // функция для регулирования окончания в слове "комната"
+  var roomsFlexNormalize = function (number) {
+    var FORMS = ['комнат', 'комната', 'комнаты'];
+    return flexNormalize(number, FORMS);
+  };
+
+  // функция для регулирования окончания в слове "гость"
+  var guestsFlexNormalize = function (number) {
+    var FORMS = ['гостей', 'гостя', 'гостей'];
+    return flexNormalize(number, FORMS);
+  };
+
+  var flexNormalize = function (number, forms) {
+    number = Number(number);
+    if (number % 100 > 10 && number % 100 < 15) {
+      return forms[0];
+    }
+    var remainder = number % 10;
+    switch (true) {
+      case remainder === 0 || remainder > 4:
+        return forms[0];
+      case remainder === 1:
+        return forms[1];
+      default:
+        return forms[2];
+    }
+  };
+
+  var textRooms = roomsFlexNormalize(rooms);
+  var textGuests = guestsFlexNormalize(guests);
+  cardRoomsGuests.textContent = rooms + ' ' + textRooms + ' для ' + guests + ' ' + textGuests;
+
+  //
+  var cardTime = cardTemplate.querySelector('.popup__text--time');
+  cardTime.textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
+
+  //
+  var cardFeatures = cardTemplate.querySelector('.popup__features');
+  cardFeatures.innerHTML = '';
+  var featuresItems = item.offer.features;
+  var htmlFeatures = '';
+  var featuresList = featuresItems.reduce(function (htmlFeatures, featuresItems) {
+    htmlFeatures +='<li class="popup__feature popup__feature--' + featuresItems + '"></li>';
+    return htmlFeatures;
+  }, '');
+  cardFeatures.insertAdjacentHTML('afterBegin', featuresList);
+
+  //
+  var cardDescription = cardTemplate.querySelector('.popup__description');
+  cardDescription.textContent = item.offer.description;
+
+  //
+  var cardAvatar = cardTemplate.querySelector('.popup__avatar');
+  cardAvatar.src = item.author.avatar;
+
+  //
+  var cardPhotos = cardTemplate.querySelector('.popup__photos');
+  cardPhotos.innerHTML = '';
+  var photosItems = item.offer.photos;
+  var htmlPhotos = '';
+  var photosList = photosItems.reduce(function (htmlPhotos, photosItems) {
+    htmlPhotos +='<img src="' + photosItems + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+    return htmlPhotos;
+  }, '');
+  cardPhotos.insertAdjacentHTML('afterBegin', photosList);
+
+  //
+  var map = document.querySelector('.map');
+  var mapFilters = document.querySelector('.map__filters-container');
+  map.insertBefore(cardTemplate, mapFilters);
+};
+
 var ads = generateAds(ADS_NUMBER);
 switchActiveMap();
 addPinsToMap(ads);
-
-// Создаем карточку объекта жилья
-
-var item = ads[0];
-var cardTemplate = document.querySelector('#card')
-  .content
-  .querySelector('.map__card');
-
-//
-var cardTitle = cardTemplate.querySelector('.popup__title');
-cardTitle.textContent = item.offer.title;
-
-//
-var cardAddress = cardTemplate.querySelector('.popup__text--address');
-cardAddress.textContent = item.offer.address;
-
-//
-var cardPrice = cardTemplate.querySelector('.popup__text--price');
-cardPrice.textContent = item.offer.price + '₽/ночь';
-
-//
-var cardType = cardTemplate.querySelector('.popup__type');
-if (item.offer.type === 'flat') {
-  cardType.textContent = 'Квартира';
-}
-if (item.offer.type === 'bungalo') {
-  cardType.textContent = 'Бунгало';
-}
-if (item.offer.type === 'house') {
-  cardType.textContent = 'Дом';
-}
-if (item.offer.type === 'palace') {
-  cardType.textContent = 'Дворец';
-}
-
-//
-var cardRoomsGuests = cardTemplate.querySelector('.popup__text--capacity');
-var rooms = item.offer.rooms;
-var guests = item.offer.guests;
-
-// функция для регулирования окончания в слове "комната"
-var roomsFlexNormalize = function (number) {
-  var FORMS = ['комнат', 'комната', 'комнаты'];
-  return flexNormalize(number, FORMS);
-};
-
-// функция для регулирования окончания в слове "гость"
-var guestsFlexNormalize = function (number) {
-  var FORMS = ['гостей', 'гостя', 'гостей'];
-  return flexNormalize(number, FORMS);
-};
-
-var flexNormalize = function (number, forms) {
-  number = Number(number);
-  if (number % 100 > 10 && number % 100 < 15) {
-    return forms[0];
-  }
-  var remainder = number % 10;
-  switch (true) {
-    case remainder === 0 || remainder > 4:
-      return forms[0];
-    case remainder === 1:
-      return forms[1];
-    default:
-      return forms[2];
-  }
-};
-
-var textRooms = roomsFlexNormalize(rooms);
-var textGuests = guestsFlexNormalize(guests);
-
-cardRoomsGuests.textContent = rooms + ' ' + textRooms + ' для ' + guests + ' ' + textGuests;
-
-//
-var cardTime = cardTemplate.querySelector('.popup__text--time');
-cardTime.textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
-
-//
-var cardFeatures = cardTemplate.querySelector('.popup__features');
-for (var i = cardFeatures.children.length - 1; i >= 0; i--) {
-  var child = cardFeatures.children[i];
-  child.parentElement.removeChild(child);
-}
-var featuresItems = item.offer.features;
-featuresItems.forEach(function (features) {
-  cardFeatures.insertAdjacentHTML('afterbegin', '<li class="popup__feature popup__feature--' + features + '"></li>');
-});
-
-
-//
-var cardDescription = cardTemplate.querySelector('.popup__description');
-cardDescription.textContent = item.offer.description;
-
-//
-var cardAvatar = cardTemplate.querySelector('.popup__avatar');
-cardAvatar.src = item.author.avatar;
-
-//
-var cardPhotos = cardTemplate.querySelector('.popup__photos');
-for (var i = cardPhotos.children.length - 1; i >= 0; i--) {
-  var child = cardPhotos.children[i];
-  child.parentElement.removeChild(child);
-}
-var photosItems = item.offer.photos;
-photosItems.forEach(function (photos) {
-  cardPhotos.insertAdjacentHTML('afterbegin', '<img src="' + photos + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">');
-});
-
-var map = document.querySelector('.map');
-var mapFilters = document.querySelector('.map__filters-container');
-map.insertBefore(cardTemplate, mapFilters);
+renderCard (ads[0]);
