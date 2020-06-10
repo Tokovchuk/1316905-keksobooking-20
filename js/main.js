@@ -45,6 +45,35 @@ var shuffleArray = function (items) {
   return itemsClone;
 };
 
+// функция для регулирования окончания в слове "комната"
+var roomsFlexNormalize = function (number) {
+  var FORMS = ['комнат', 'комната', 'комнаты'];
+  return flexNormalize(number, FORMS);
+};
+
+// функция для регулирования окончания в слове "гость"
+var guestsFlexNormalize = function (number) {
+  var FORMS = ['гостей', 'гостя', 'гостей'];
+  return flexNormalize(number, FORMS);
+};
+
+// функция регулирования слова "гость" и "комната"
+var flexNormalize = function (number, forms) {
+  number = Number(number);
+  if (number % 100 > 10 && number % 100 < 15) {
+    return forms[0];
+  }
+  var remainder = number % 10;
+  switch (true) {
+    case remainder === 0 || remainder > 4:
+      return forms[0];
+    case remainder === 1:
+      return forms[1];
+    default:
+      return forms[2];
+  }
+};
+
 // Гененрируем итоговый массив объектов жилья
 
 var generateAds = function (number) {
@@ -113,116 +142,62 @@ var addPinsToMap = function (items) {
   mapPins.appendChild(fragment);
 };
 
+// функция для заполнения поля преимуществ
+var addFeatures = function (features, template) {
+  template.innerHTML = '';
+  if (!features) {
+    template.style.display = 'none';
+  } else {
+    var featuresList = features.reduce(function (htmlFeatures, feature) {
+      return htmlFeatures + '<li class="popup__feature popup__feature--' + feature + '"></li>';
+    }, '');
+    template.insertAdjacentHTML('afterBegin', featuresList);
+  }
+};
+
+// функция для заполнения поля фотографий объекта жилья
+var addPhotos = function (photos, template) {
+  template.innerHTML = '';
+  if (!photos) {
+    template.style.display = 'none';
+  } else {
+    var photosList = photos.reduce(function (htmlPhotos, photo) {
+      return htmlPhotos + '<img src="' + photo + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+    }, '');
+    template.insertAdjacentHTML('afterBegin', photosList);
+  }
+};
+
 // Создаем карточку объекта жилья
-
-
 var renderCard = function (item) {
-
   var cardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
-
-  //
-  var cardTitle = cardTemplate.querySelector('.popup__title');
-  cardTitle.textContent = item.offer.title;
-
-  //
-  var cardAddress = cardTemplate.querySelector('.popup__text--address');
-  cardAddress.textContent = item.offer.address;
-
-  //
-  var cardPrice = cardTemplate.querySelector('.popup__text--price');
-  cardPrice.textContent = item.offer.price + '₽/ночь';
-
-  //
-  var cardType = cardTemplate.querySelector('.popup__type');
   var typesMap = {
-    'flat': 'квартира',
-    'bungalo': 'бунгало',
-    'house': 'дом',
-    'palace': 'дворец',
+    'flat': 'Квартира',
+    'bungalo': 'Бунгало',
+    'house': 'Дом',
+    'palace': 'Дворец',
   };
-  cardType.textContent = typesMap[item.offer.type];
-
-  //
-  var cardRoomsGuests = cardTemplate.querySelector('.popup__text--capacity');
+  cardTemplate.querySelector('.popup__title').textContent = item.offer.title;
+  cardTemplate.querySelector('.popup__text--address').textContent = item.offer.address;
+  cardTemplate.querySelector('.popup__text--price').textContent = item.offer.price + '₽/ночь';
+  cardTemplate.querySelector('.popup__type').textContent = typesMap[item.offer.type];
   var rooms = item.offer.rooms;
   var guests = item.offer.guests;
-
-  // функция для регулирования окончания в слове "комната"
-  var roomsFlexNormalize = function (number) {
-    var FORMS = ['комнат', 'комната', 'комнаты'];
-    return flexNormalize(number, FORMS);
-  };
-
-  // функция для регулирования окончания в слове "гость"
-  var guestsFlexNormalize = function (number) {
-    var FORMS = ['гостей', 'гостя', 'гостей'];
-    return flexNormalize(number, FORMS);
-  };
-
-  var flexNormalize = function (number, forms) {
-    number = Number(number);
-    if (number % 100 > 10 && number % 100 < 15) {
-      return forms[0];
-    }
-    var remainder = number % 10;
-    switch (true) {
-      case remainder === 0 || remainder > 4:
-        return forms[0];
-      case remainder === 1:
-        return forms[1];
-      default:
-        return forms[2];
-    }
-  };
-
   var textRooms = roomsFlexNormalize(rooms);
   var textGuests = guestsFlexNormalize(guests);
-  cardRoomsGuests.textContent = rooms + ' ' + textRooms + ' для ' + guests + ' ' + textGuests;
+  cardTemplate.querySelector('.popup__text--capacity').textContent = rooms + ' ' + textRooms + ' для ' + guests + ' ' + textGuests;
+  cardTemplate.querySelector('.popup__text--time').textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
+  cardTemplate.querySelector('.popup__description').textContent = item.offer.description;
+  cardTemplate.querySelector('.popup__avatar').src = item.author.avatar;
 
-  //
-  var cardTime = cardTemplate.querySelector('.popup__text--time');
-  cardTime.textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
-
-  //
   var cardFeatures = cardTemplate.querySelector('.popup__features');
-  cardFeatures.innerHTML = '';
-  var featuresItems = item.offer.features;
-  if (!featuresItems) {
-    cardFeatures.style.display = 'none';
-  } else {
-    var featuresList = featuresItems.reduce(function (htmlFeatures, features) {
-      return htmlFeatures + '<li class="popup__feature popup__feature--' + features + '"></li>';
-    }, '');
-    cardFeatures.insertAdjacentHTML('afterBegin', featuresList);
-  }
-
-  //
-  var cardDescription = cardTemplate.querySelector('.popup__description');
-  cardDescription.textContent = item.offer.description;
-
-  //
-  var cardAvatar = cardTemplate.querySelector('.popup__avatar');
-  cardAvatar.src = item.author.avatar;
-
-  //
   var cardPhotos = cardTemplate.querySelector('.popup__photos');
-  cardPhotos.innerHTML = '';
-  var photosItems = item.offer.photos;
-  if (!photosItems) {
-    cardPhotos.style.display = 'none';
-  } else {
-    var photosList = photosItems.reduce(function (htmlPhotos, photos) {
-      return htmlPhotos + '<img src="' + photos + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
-    }, '');
-    cardPhotos.insertAdjacentHTML('afterBegin', photosList);
-  }
 
-  //
-  var map = document.querySelector('.map');
-  var mapFilters = document.querySelector('.map__filters-container');
-  map.insertBefore(cardTemplate, mapFilters);
+  addFeatures(item.offer.features, cardFeatures);
+  addPhotos(item.offer.photos, cardPhotos);
+  document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', cardTemplate);
 };
 
 var ads = generateAds(ADS_NUMBER);
