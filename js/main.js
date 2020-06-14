@@ -8,8 +8,8 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
-var LOCATION_MIN_X = 100;
-var LOCATION_MAX_X = 1100;
+var LOCATION_MIN_X = 0;
+var LOCATION_MAX_X = 1200;
 var LOCATION_MIN_Y = 130;
 var LOCATION_MAX_Y = 630;
 var ADS_NUMBER = 8;
@@ -199,7 +199,38 @@ var renderCard = function (ad) {
   document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', cardTemplate);
 };
 
+var addDisabled = function(){
+  var field = document.querySelectorAll('fieldset');
+  field.forEach(function (item) {
+    item.setAttribute('disabled', 'disabled');
+  });
+  document.querySelector('.map__filters').setAttribute('disabled', 'disabled');
+}
+
+addDisabled();
+
+var activateSite = function() {
+  switchActiveMap();
+  addPinsToMap(ads);
+  renderCard(ads[0]);
+};
+
+var mainPin = document.querySelector('.map__pin--main');
+mainPin.addEventListener('mousedown', function(evt) {
+  evt.preventDefault();
+  if (evt.which == 1) {
+    activateSite();
+  }
+});
+mainPin.addEventListener('keydown', function(evt) {
+  evt.preventDefault();
+  if (evt.key == 'Enter') {
+    activateSite();
+  }
+});
+
+var addressMain = document.querySelector('#address');
+addressMain.value = ((LOCATION_MIN_X + LOCATION_MAX_X) / 2) + ', ' + ((LOCATION_MIN_X + LOCATION_MAX_X) / 2);
+
 var ads = generateAds(ADS_NUMBER);
-switchActiveMap();
-addPinsToMap(ads);
-renderCard(ads[0]);
+
