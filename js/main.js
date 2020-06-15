@@ -199,25 +199,25 @@ var renderCard = function (ad) {
   document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', cardTemplate);
 };
 
-var addDisabled = function(){
+var addDisabled = function () {
   var fields = document.querySelectorAll('fieldset');
   fields.forEach(function (item) {
     item.setAttribute('disabled', 'disabled');
   });
   document.querySelector('.map__filters').setAttribute('disabled', 'disabled');
-}
+};
 
-var removeDisabled = function(){
+var removeDisabled = function () {
   var fields = document.querySelectorAll('fieldset');
   fields.forEach(function (item) {
     item.removeAttribute('disabled');
   });
   document.querySelector('.map__filters').removeAttribute('disabled');
-}
+};
 
 addDisabled();
 
-var activateSite = function() {
+var activateSite = function () {
   switchActiveMap();
   addPinsToMap(ads);
   renderCard(ads[0]);
@@ -226,15 +226,15 @@ var activateSite = function() {
 };
 
 var mainPin = document.querySelector('.map__pin--main');
-mainPin.addEventListener('mousedown', function(evt) {
+mainPin.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
-  if (evt.which == 1) {
+  if (evt.which === 1) {
     activateSite();
   }
 });
-mainPin.addEventListener('keydown', function(evt) {
+mainPin.addEventListener('keydown', function (evt) {
   evt.preventDefault();
-  if (evt.key == 'Enter') {
+  if (evt.key === 'Enter') {
     activateSite();
   }
 });
@@ -246,11 +246,18 @@ var ads = generateAds(ADS_NUMBER);
 
 var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
+var roomsAndCapacity = {
+  // rooms: capacity
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0'],
+};
 
-capacity.addEventListener('invalid', function(evt) {
-  if(evt.target.value > roomNumber.target.value) {
-    capacity.setCustomValidity('слишком много людишек для это халупы');
-  } else {
-    capacity.setCustomValidity('');
+document.querySelector('.ad-form').addEventListener('change', function () {
+  var roomValue = roomNumber.value;
+  var capacityValue = capacity.value;
+  if (!roomsAndCapacity[roomValue].includes(capacityValue)) {
+    capacity.setCustomValidity('Слишком много людишек для этой халупы!!!');
   }
 });
