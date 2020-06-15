@@ -200,11 +200,19 @@ var renderCard = function (ad) {
 };
 
 var addDisabled = function(){
-  var field = document.querySelectorAll('fieldset');
-  field.forEach(function (item) {
+  var fields = document.querySelectorAll('fieldset');
+  fields.forEach(function (item) {
     item.setAttribute('disabled', 'disabled');
   });
   document.querySelector('.map__filters').setAttribute('disabled', 'disabled');
+}
+
+var removeDisabled = function(){
+  var fields = document.querySelectorAll('fieldset');
+  fields.forEach(function (item) {
+    item.removeAttribute('disabled');
+  });
+  document.querySelector('.map__filters').removeAttribute('disabled');
 }
 
 addDisabled();
@@ -213,6 +221,8 @@ var activateSite = function() {
   switchActiveMap();
   addPinsToMap(ads);
   renderCard(ads[0]);
+  removeDisabled();
+  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
 };
 
 var mainPin = document.querySelector('.map__pin--main');
@@ -234,3 +244,13 @@ addressMain.value = ((LOCATION_MIN_X + LOCATION_MAX_X) / 2) + ', ' + ((LOCATION_
 
 var ads = generateAds(ADS_NUMBER);
 
+var roomNumber = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
+
+capacity.addEventListener('invalid', function(evt) {
+  if(evt.target.value > roomNumber.target.value) {
+    capacity.setCustomValidity('слишком много людишек для это халупы');
+  } else {
+    capacity.setCustomValidity('');
+  }
+});
