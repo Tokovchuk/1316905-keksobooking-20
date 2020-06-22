@@ -271,7 +271,6 @@ var switchToDisableSite = function () {
   addAddressInDisable();
   switchDisableMap();
   removePinsFromMap();
-  removeValidateRoomsAndGuests();
   adForm.classList.add('ad-form--disabled');
 };
 
@@ -284,8 +283,6 @@ var switchToActiveSite = function () {
   addValidateRoomsAndGuests();
   adForm.classList.remove('ad-form--disabled');
 };
-
-var ads = generateAds(ADS_NUMBER);
 
 var roomsAndCapacity = {
   // rooms: capacity
@@ -307,7 +304,7 @@ var roomsAndCapacity = {
   },
 };
 
-var onInputRoomsOrGuestschange = function () {
+var onInputRoomsOrGuestsChange = function () {
   var roomValue = roomNumber.value;
   var capacityValue = capacity.value;
   if (!roomsAndCapacity[roomValue].guests.includes(capacityValue)) {
@@ -318,13 +315,9 @@ var onInputRoomsOrGuestschange = function () {
 };
 
 var addValidateRoomsAndGuests = function () {
-  document.querySelector('.ad-form').addEventListener('change', onInputRoomsOrGuestschange);
+  adForm.addEventListener('change', onInputRoomsOrGuestsChange);
 };
 
-var removeValidateRoomsAndGuests = function () {
-  document.querySelector('.ad-form').removeEventListener('change', onInputRoomsOrGuestschange);
-};
+var ads = generateAds(ADS_NUMBER);
 
 switchToDisableSite();
-
-
