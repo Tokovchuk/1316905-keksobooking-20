@@ -28,6 +28,7 @@ var addressMain = document.querySelector('#address');
 var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
 
+
 // случайное число в заданом диапазоне
 
 var getRandomInt = function (min, max) {
@@ -140,7 +141,15 @@ var renderPin = function (housing) {
   pinElement.style.left = housing.location.x - MAP_PIN_WIDTH / 2 + 'px';
   pinElement.style.top = housing.location.y - MAP_PIN_HEIGHT + 'px';
   pinElement.querySelector('img').src = housing.author.avatar;
-  pinElement.querySelector('img').alt = housing.offer.title; 
+  pinElement.querySelector('img').alt = housing.offer.title;
+  pinElement.addEventListener('click', function() {
+    renderCard(housing);
+    var popup = document.querySelector('.popup');
+    var closeCardButton = popup.querySelector('.popup__close');
+    closeCardButton.addEventListener('click', function() {
+      popup.style.display = 'none';
+    });
+  });
   return pinElement;
 };
 
@@ -149,7 +158,7 @@ var renderPin = function (housing) {
 var addPinsToMap = function (items) {
   var fragment = document.createDocumentFragment();
   items.forEach(function (ad) {
-    fragment.appendChild(renderPin(ad));   
+    fragment.appendChild(renderPin(ad));
   });
   mapPins.appendChild(fragment);
 };
