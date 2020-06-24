@@ -144,11 +144,6 @@ var renderPin = function (housing) {
   pinElement.querySelector('img').alt = housing.offer.title;
   pinElement.addEventListener('click', function() {
     renderCard(housing);
-    var popup = document.querySelector('.popup');
-    var closeCardButton = popup.querySelector('.popup__close');
-    closeCardButton.addEventListener('click', function() {
-      popup.style.display = 'none';
-    });
   });
   return pinElement;
 };
@@ -184,7 +179,7 @@ var addFeatures = function (features, template) {
   }
 };
 
-// // функция для заполнения поля фотографий объекта жилья
+// функция для заполнения поля фотографий объекта жилья
 var addPhotos = function (photos, template) {
 template.innerHTML = '';
   if (!photos) {
@@ -201,7 +196,8 @@ template.innerHTML = '';
 var renderCard = function (ad) {
   var cardTemplate = document.querySelector('#card')
     .content
-    .querySelector('.map__card');
+    .querySelector('.map__card')
+    .cloneNode(true);
   var typesMap = {
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
@@ -214,6 +210,14 @@ var renderCard = function (ad) {
   var textGuests = guestsFlexNormalize(guests);
   var featuresTempalte = cardTemplate.querySelector('.popup__features');
   var photosTemplate = cardTemplate.querySelector('.popup__photos');
+  var closeCardButton = cardTemplate.querySelector('.popup__close');
+
+  var onEscDown = function(evt) {
+    if(evt.key === "Escape") {
+      cardTemplate.remove();
+      document.removeEventListener('keydown', onEscDown);
+    }
+  };
 
   cardTemplate.querySelector('.popup__title').textContent = ad.offer.title;
   cardTemplate.querySelector('.popup__text--address').textContent = ad.offer.address;
@@ -226,6 +230,10 @@ var renderCard = function (ad) {
   addFeatures(ad.offer.features, featuresTempalte);
   addPhotos(ad.offer.photos, photosTemplate);
   document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', cardTemplate);
+  closeCardButton.addEventListener('click', function() {
+    cardTemplate.remove();
+  });
+  document.addEventListener('keydown', onEscDown);
 };
 
 var addDisabled = function () {
@@ -324,7 +332,8 @@ var onInputRoomsOrGuestsChange = function () {
 };
 
 var addValidateRoomsAndGuests = function () {
-  adForm.addEventListener('change', onInputRoomsOrGuestsChange);
+  roomNumber.addEventListener('change', onInputRoomsOrGuestsChange);
+  capacity.addEventListener('change', onInputRoomsOrGuestsChange);
 };
 
 var ads = generateAds(ADS_NUMBER);
