@@ -28,7 +28,6 @@ var addressMain = document.querySelector('#address');
 var roomNumber = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
 
-
 // случайное число в заданом диапазоне
 
 var getRandomInt = function (min, max) {
@@ -142,8 +141,13 @@ var renderPin = function (housing) {
   pinElement.style.top = housing.location.y - MAP_PIN_HEIGHT + 'px';
   pinElement.querySelector('img').src = housing.author.avatar;
   pinElement.querySelector('img').alt = housing.offer.title;
-  pinElement.addEventListener('click', function() {
+  pinElement.addEventListener('click', function () {
     renderCard(housing);
+  });
+  pinElement.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') {
+      renderCard(housing);
+    }
   });
   return pinElement;
 };
@@ -181,7 +185,7 @@ var addFeatures = function (features, template) {
 
 // функция для заполнения поля фотографий объекта жилья
 var addPhotos = function (photos, template) {
-template.innerHTML = '';
+  template.innerHTML = '';
   if (!photos) {
     template.style.display = 'none';
   } else {
@@ -212,8 +216,8 @@ var renderCard = function (ad) {
   var photosTemplate = cardTemplate.querySelector('.popup__photos');
   var closeCardButton = cardTemplate.querySelector('.popup__close');
 
-  var onEscDown = function(evt) {
-    if(evt.key === "Escape") {
+  var onEscDown = function (evt) {
+    if (evt.key === 'Escape') {
       cardTemplate.remove();
       document.removeEventListener('keydown', onEscDown);
     }
@@ -230,7 +234,7 @@ var renderCard = function (ad) {
   addFeatures(ad.offer.features, featuresTempalte);
   addPhotos(ad.offer.photos, photosTemplate);
   document.querySelector('.map__filters-container').insertAdjacentElement('beforebegin', cardTemplate);
-  closeCardButton.addEventListener('click', function() {
+  closeCardButton.addEventListener('click', function () {
     cardTemplate.remove();
   });
   document.addEventListener('keydown', onEscDown);
@@ -298,6 +302,8 @@ var switchToActiveSite = function () {
   switchActiveMap();
   addPinsToMap(ads);
   addValidateRoomsAndGuests();
+  addSyncCheckinAndCheckout();
+  addValidateTypeAndPriceHousing();
   adForm.classList.remove('ad-form--disabled');
 };
 
@@ -335,6 +341,43 @@ var addValidateRoomsAndGuests = function () {
   roomNumber.addEventListener('change', onInputRoomsOrGuestsChange);
   capacity.addEventListener('change', onInputRoomsOrGuestsChange);
 };
+
+var addSyncCheckinAndCheckout = function () {
+  var checkinTime = document.querySelector('#timein');
+  var checkoutTime = document.querySelector('#timeout');
+
+  checkinTime.addEventListener('change', function () {
+    checkoutTime.value = checkinTime.value;
+  });
+
+  checkoutTime.addEventListener('change', function () {
+    checkinTime.value = checkoutTime.value;
+  });
+};
+
+var addValidateTypeAndPriceHousing = function () {
+  var typeHousing = document.querySelector('#type');
+  var priceHousing = document.querySelector('#price');
+  typeHousing.addEventListener('change', function () {
+    if (typeHousing.value === 'bungalo') {
+      priceHousing.setAttribute('placeholder', 'Минимум 0');
+      priceHousing.min = 0;
+    }
+    if (typeHousing.value === 'flat') {
+      priceHousing.placeholder = 'Минимум 1000';
+      priceHousing.min = 1000;
+    }
+    if (typeHousing.value === 'house') {
+      priceHousing.placeholder = 'Минимум 5000';
+      priceHousing.min = 5000;
+    }
+    if (typeHousing.value === 'palace') {
+      priceHousing.placeholder = 'Минимум 10000';
+      priceHousing.min = 10000;
+    }
+  });
+};
+
 
 var ads = generateAds(ADS_NUMBER);
 
