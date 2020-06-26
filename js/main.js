@@ -302,8 +302,6 @@ var switchToActiveSite = function () {
   switchActiveMap();
   addPinsToMap(ads);
   addValidateRoomsAndGuests();
-  addSyncCheckinAndCheckout();
-  addValidateTypeAndPriceHousing();
   adForm.classList.remove('ad-form--disabled');
 };
 
@@ -360,7 +358,7 @@ var addValidateTypeAndPriceHousing = function () {
   var priceHousing = document.querySelector('#price');
   typeHousing.addEventListener('change', function () {
     if (typeHousing.value === 'bungalo') {
-      priceHousing.setAttribute('placeholder', 'Минимум 0');
+      priceHousing.placeholder = 'Минимум 0';
       priceHousing.min = 0;
     }
     if (typeHousing.value === 'flat') {
@@ -382,4 +380,6 @@ var addValidateTypeAndPriceHousing = function () {
 var ads = generateAds(ADS_NUMBER);
 
 switchToDisableSite();
+addSyncCheckinAndCheckout();
+addValidateTypeAndPriceHousing();
 
