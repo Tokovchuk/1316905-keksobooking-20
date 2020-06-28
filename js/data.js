@@ -1,6 +1,6 @@
 'use strict';
 
-(function (){
+(function () {
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var CHECKINS = ['12:00', '13:00', '14:00'];
   var CHECKOUTS = ['12:00', '13:00', '14:00'];
@@ -16,26 +16,26 @@
   var LOCATION_MAX_Y = 630;
 
   var getRandomInt = function (min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
   var getRandomElement = function (items) {
-  var randomElement = Math.floor(Math.random() * items.length);
-  return items[randomElement];
-  };  
+    var randomElement = Math.floor(Math.random() * items.length);
+    return items[randomElement];
+  };
 
   var shuffleArray = function (items) {
-  var itemsClone = items.slice();
-  var length = itemsClone.length;
-  for (var i = 0; i < length; i++) {
-    var j = getRandomInt(0, length - 1);
-    var swap = itemsClone[i];
-    itemsClone[i] = itemsClone[j];
-    itemsClone[j] = swap;
-  }
-  return itemsClone;
+    var itemsClone = items.slice();
+    var length = itemsClone.length;
+    for (var i = 0; i < length; i++) {
+      var j = getRandomInt(0, length - 1);
+      var swap = itemsClone[i];
+      itemsClone[i] = itemsClone[j];
+      itemsClone[j] = swap;
+    }
+    return itemsClone;
   };
 
   var generateAds = function (number) {
@@ -71,4 +71,8 @@
   };
 
   var ads = generateAds(ADS_NUMBER);
+
+  window.data = {
+    ads: ads,
+  };
 })();

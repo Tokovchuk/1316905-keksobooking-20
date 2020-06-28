@@ -19,11 +19,11 @@
     var remainder = number % 10;
     switch (true) {
       case remainder === 0 || remainder > 4:
-      return forms[0];
+        return forms[0];
       case remainder === 1:
-      return forms[1];
+        return forms[1];
       default:
-      return forms[2];
+        return forms[2];
     }
   };
 
@@ -93,5 +93,8 @@
     });
     document.addEventListener('keydown', onEscDown);
   };
+
+  window.card = {
+    renderCard: renderCard,
+  };
 })();
-  

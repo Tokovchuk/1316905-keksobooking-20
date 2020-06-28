@@ -1,6 +1,16 @@
 'use strict';
 
 (function () {
+  var MAIN_MAP_PIN_WIDTH_DISABLE = 65;
+  var MAIN_MAP_PIN_HEIGHT_DISABLE = 65;
+  var MAIN_MAP_PIN_WIDTH_ACTIVE = 65;
+  var MAIN_MAP_PIN_HEIGHT_ACTIVE = 84;
+
+  var addressMain = document.querySelector('#address');
+  var roomNumber = document.querySelector('#room_number');
+  var capacity = document.querySelector('#capacity');
+  var mainPin = document.querySelector('.map__pin--main');
+
   var roomsAndCapacity = {
     // rooms: capacity
     1: {
@@ -94,5 +104,15 @@
         priceHousing.min = 10000;
       }
     });
+  };
+
+  window.form = {
+    addDisabled: addDisabled,
+    removeDisabled: removeDisabled,
+    addAddressInDisable: addAddressInDisable,
+    addAddressInActive: addAddressInActive,
+    addValidateRoomsAndGuests: addValidateRoomsAndGuests,
+    addSyncCheckinAndCheckout: addSyncCheckinAndCheckout,
+    addValidateTypeAndPriceHousing: addValidateTypeAndPriceHousing,
   };
 })();
