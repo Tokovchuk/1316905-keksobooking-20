@@ -14,17 +14,17 @@
     pinElement.querySelector('img').src = housing.author.avatar;
     pinElement.querySelector('img').alt = housing.offer.title;
     pinElement.addEventListener('click', function () {
-      window.card.renderCard(housing);
+      window.card.render(housing);
     });
     pinElement.addEventListener('keydown', function (evt) {
       if (evt.key === 'Enter') {
-        window.card.renderCard(housing);
+        window.card.render(housing);
       }
     });
     return pinElement;
   };
 
   window.pin = {
-    renderPin: renderPin,
+    render: renderPin,
   };
 })();

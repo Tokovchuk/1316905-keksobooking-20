@@ -6,8 +6,8 @@
     window.form.addDisabled();
     window.map.addListenersToMainPin();
     window.form.addAddressInDisable();
-    window.map.switchDisableMap();
-    window.map.removePinsFromMap();
+    window.map.switchDisable();
+    window.map.removePins();
     adForm.classList.add('ad-form--disabled');
   };
 
@@ -15,8 +15,8 @@
     window.form.removeDisabled();
     window.map.removeListenersFromMainPin();
     window.form.addAddressInActive();
-    window.map.switchActiveMap();
-    window.map.addPinsToMap(window.data.ads);
+    window.map.switchActive();
+    window.map.addPins(window.data.ads);
     adForm.classList.remove('ad-form--disabled');
   };
 
