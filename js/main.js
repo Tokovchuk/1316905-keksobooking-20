@@ -13,7 +13,7 @@
 
   var switchToActiveSite = function () {
     window.form.removeDisabled();
-    window.map.removeListenersFromMainPin();
+    // window.map.removeListenersFromMainPin();
     window.form.addAddressInActive();
     window.map.switchActive();
     window.map.addPins(window.data.ads);
