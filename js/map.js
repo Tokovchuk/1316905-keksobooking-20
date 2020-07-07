@@ -51,16 +51,15 @@
           x: moveEvt.clientX,
           y: moveEvt.clientY
         };
-        if (parseInt(mainPin.style.left, 10) >= window.data.LOCATION_MIN_X &&
-            parseInt(mainPin.style.left, 10) <= window.data.LOCATION_MAX_X) {
+        if (parseInt(mainPin.style.left, 10) - shift.x >= window.data.LOCATION_MIN_X &&
+            parseInt(mainPin.style.left, 10) - shift.x <= window.data.LOCATION_MAX_X) {
           mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-          window.form.addAddressInActive();
         }
-        if (parseInt(mainPin.style.top, 10) >= window.data.LOCATION_MIN_Y &&
-            parseInt(mainPin.style.top, 10) <= window.data.LOCATION_MAX_Y) {
+        if (parseInt(mainPin.style.top, 10) - shift.y >= window.data.LOCATION_MIN_Y &&
+            parseInt(mainPin.style.top, 10) - shift.y <= window.data.LOCATION_MAX_Y) {
           mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-          window.form.addAddressInActive();
         }
+        window.form.addAddressInActive();
       };
       var onMouseUp = function () {
         document.removeEventListener('mousemove', onMouseMove);
