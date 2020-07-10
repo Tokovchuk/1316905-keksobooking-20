@@ -52,7 +52,7 @@
   };
 
   var addAddressInActive = function () {
-    addressMain.value = Math.round(parseInt(mainPin.style.left, 10) + MAIN_MAP_PIN_WIDTH_ACTIVE / 2) + ', ' + Math.round(parseInt(mainPin.style.top, 10) + MAIN_MAP_PIN_HEIGHT_ACTIVE);
+    addressMain.value = Math.ceil(parseInt(mainPin.style.left, 10) + MAIN_MAP_PIN_WIDTH_ACTIVE / 2) + ', ' + Math.round(parseInt(mainPin.style.top, 10) + MAIN_MAP_PIN_HEIGHT_ACTIVE);
   };
 
   var onInputRoomsOrGuestsChange = function () {

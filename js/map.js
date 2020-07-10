@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var MAIN_MAP_PIN_WIDTH_ACTIVE = 65;
+  var MAIN_MAP_PIN_HEIGHT_ACTIVE = 84;
+
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
@@ -51,12 +54,12 @@
           x: moveEvt.clientX,
           y: moveEvt.clientY
         };
-        if (parseInt(mainPin.style.left, 10) - shift.x >= window.data.LOCATION_MIN_X &&
-            parseInt(mainPin.style.left, 10) - shift.x <= window.data.LOCATION_MAX_X) {
+        if (parseInt(mainPin.style.left, 10) - shift.x >= window.data.LOCATION_MIN_X - Math.round(MAIN_MAP_PIN_WIDTH_ACTIVE / 2) &&
+            parseInt(mainPin.style.left, 10) - shift.x <= window.data.LOCATION_MAX_X - Math.round(MAIN_MAP_PIN_WIDTH_ACTIVE / 2)) {
           mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
         }
-        if (parseInt(mainPin.style.top, 10) - shift.y >= window.data.LOCATION_MIN_Y &&
-            parseInt(mainPin.style.top, 10) - shift.y <= window.data.LOCATION_MAX_Y) {
+        if (parseInt(mainPin.style.top, 10) - shift.y >= window.data.LOCATION_MIN_Y - MAIN_MAP_PIN_HEIGHT_ACTIVE &&
+            parseInt(mainPin.style.top, 10) - shift.y <= window.data.LOCATION_MAX_Y - MAIN_MAP_PIN_HEIGHT_ACTIVE) {
           mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
         }
         window.form.addAddressInActive();
