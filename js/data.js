@@ -74,5 +74,9 @@
 
   window.data = {
     ads: ads,
+    LOCATION_MIN_X: LOCATION_MIN_X,
+    LOCATION_MAX_X: LOCATION_MAX_X,
+    LOCATION_MIN_Y: LOCATION_MIN_Y,
+    LOCATION_MAX_Y: LOCATION_MAX_Y,
   };
 })();

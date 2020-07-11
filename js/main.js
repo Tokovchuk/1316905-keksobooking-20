@@ -13,8 +13,8 @@
 
   var switchToActiveSite = function () {
     window.form.removeDisabled();
-    window.map.removeListenersFromMainPin();
-    window.form.addAddressInActive();
+    // window.map.removeListenersFromMainPin();
+    // window.form.addAddressInActive();
     window.map.switchActive();
     window.map.addPins(window.data.ads);
     adForm.classList.remove('ad-form--disabled');
