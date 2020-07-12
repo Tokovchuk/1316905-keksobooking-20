@@ -2,6 +2,14 @@
 (function () {
   var adForm = document.querySelector('.ad-form');
 
+  var onError = function (message) {
+    alert.error(message);
+  };
+
+  var onSuccess = function (data) {
+    window.map.addPins(data);
+  };
+
   var switchToDisableSite = function () {
     window.form.addDisabled();
     window.map.addListenersToMainPin();
@@ -13,11 +21,9 @@
 
   var switchToActiveSite = function () {
     window.form.removeDisabled();
-    // window.map.removeListenersFromMainPin();
-    // window.form.addAddressInActive();
     window.map.switchActive();
-    window.map.addPins(window.data.ads);
     adForm.classList.remove('ad-form--disabled');
+    window.load(onSuccess, onError);
   };
 
   switchToDisableSite();

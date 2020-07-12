@@ -92,6 +92,7 @@
       cardTemplate.remove();
     });
     document.addEventListener('keydown', onEscDown);
+    window.card.template = cardTemplate;
   };
 
   window.card = {

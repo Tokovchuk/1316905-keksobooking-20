@@ -3,6 +3,7 @@
 (function () {
   var MAIN_MAP_PIN_WIDTH_ACTIVE = 65;
   var MAIN_MAP_PIN_HEIGHT_ACTIVE = 84;
+  var ADS_NUMBER = 8;
 
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
@@ -18,7 +19,7 @@
 
   var addPinsToMap = function (items) {
     var fragment = document.createDocumentFragment();
-    items.forEach(function (ad) {
+    items.slice(0, ADS_NUMBER).forEach(function (ad) {
       fragment.appendChild(window.pin.render(ad));
     });
     mapPins.appendChild(fragment);
@@ -69,15 +70,20 @@
         document.removeEventListener('mouseup', onMouseUp);
       };
 
-      window.main.switchToActiveSite();
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
     }
   };
 
+  var onMainPinClick = function () {
+    window.main.switchToActiveSite();
+    mainPin.removeEventListener('click', onMainPinClick);
+  };
+
   var addListenersToMainPin = function () {
     mainPin.addEventListener('mousedown', onMainPinMouseDown);
     mainPin.addEventListener('keydown', onMainPinEnterPress);
+    mainPin.addEventListener('click', onMainPinClick);
   };
 
   var removeListenersFromMainPin = function () {
