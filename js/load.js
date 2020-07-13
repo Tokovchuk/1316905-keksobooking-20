@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var URL = 'https://javascript.pages.academy/keksobooking/dat';
+  var URL = 'https://javascript.pages.academy/keksobooking/data';
   var STATUS_OK = 200;
 
   var loadData = function (onSuccess, onError) {
