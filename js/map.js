@@ -75,15 +75,15 @@
     }
   };
 
-  var onMainPinClick = function () {
+  var onMainPinMouseDownForLoadData = function () {
     window.main.switchToActiveSite();
-    mainPin.removeEventListener('click', onMainPinClick);
+    mainPin.removeEventListener('mousedown', onMainPinMouseDownForLoadData);
   };
 
   var addListenersToMainPin = function () {
     mainPin.addEventListener('mousedown', onMainPinMouseDown);
     mainPin.addEventListener('keydown', onMainPinEnterPress);
-    mainPin.addEventListener('click', onMainPinClick);
+    mainPin.addEventListener('mousedown', onMainPinMouseDownForLoadData);
   };
 
   var removeListenersFromMainPin = function () {

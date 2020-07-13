@@ -3,7 +3,14 @@
   var adForm = document.querySelector('.ad-form');
 
   var onError = function (message) {
-    alert.error(message);
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'fixed';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', node);
   };
 
   var onSuccess = function (data) {
@@ -23,7 +30,7 @@
     window.form.removeDisabled();
     window.map.switchActive();
     adForm.classList.remove('ad-form--disabled');
-    window.load(onSuccess, onError);
+    window.load.data(onSuccess, onError);
   };
 
   switchToDisableSite();
