@@ -25,23 +25,19 @@
       .content
       .querySelector('.error')
       .cloneNode(true);
-    var errorButton = errorUploadForm.querySelector('.error__button');
     document.body.insertAdjacentElement('afterbegin', errorUploadForm);
     document.addEventListener('click', function (evt) {
       if (evt.button === 0) {
         errorUploadForm.remove();
       }
     });
-    errorButton.addEventListener('click', function (evt) {
-      if (evt.button === 0) {
-        errorUploadForm.remove();
-      }
-    });
-    document.addEventListener('keydown', function (evt) {
+    var onEscPressDown = function (evt) {
       if (evt.key === 'Escape') {
         errorUploadForm.remove();
+        document.removeEventListener('keydown', onEscPressDown);
       }
-    });
+    };
+    document.addEventListener('keydown', onEscPressDown);
   };
 
   var onSuccessFormUpload = function () {
@@ -56,11 +52,13 @@
         successUploadForm.remove();
       }
     });
-    document.addEventListener('keydown', function (evt) {
+    var onEscPressDown = function (evt) {
       if (evt.key === 'Escape') {
         successUploadForm.remove();
+        document.removeEventListener('keydown', onEscPressDown);
       }
-    });
+    };
+    document.addEventListener('keydown', onEscPressDown);
   };
 
   var switchToDisableSite = function () {
@@ -79,11 +77,11 @@
     window.form.removeDisabled();
     window.map.switchActive();
     adForm.classList.remove('ad-form--disabled');
-    window.load.data(onSuccessLoadData, onErrorLoadData);
+    window.load.ads(onSuccessLoadData, onErrorLoadData);
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.upload.data(new FormData(adForm), onSuccessFormUpload, onErrorFormUpload);
+    window.upload.form(new FormData(adForm), onSuccessFormUpload, onErrorFormUpload);
     evt.preventDefault();
   });
 

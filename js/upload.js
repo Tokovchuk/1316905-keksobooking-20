@@ -14,11 +14,21 @@
       }
     });
 
+    xhr.addEventListener('error', function () {
+      onError();
+    });
+
+    xhr.addEventListener('timeout', function () {
+      onError();
+    });
+
+    xhr.timeout = 10000; // 10s
+
     xhr.open('POST', URL);
     xhr.send(data);
   };
 
   window.upload = {
-    data: uploadForm,
+    form: uploadForm,
   };
 })();
