@@ -29,6 +29,6 @@
   };
 
   window.load = {
-    ads: loadData,
+    getAds: loadData,
   };
 })();

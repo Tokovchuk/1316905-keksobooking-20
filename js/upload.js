@@ -29,6 +29,6 @@
   };
 
   window.upload = {
-    form: uploadForm,
+    sendForm: uploadForm,
   };
 })();

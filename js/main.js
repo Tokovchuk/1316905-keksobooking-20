@@ -29,6 +29,7 @@
     document.addEventListener('click', function (evt) {
       if (evt.button === 0) {
         errorUploadForm.remove();
+        document.removeEventListener('keydown', onEscPressDown);
       }
     });
     var onEscPressDown = function (evt) {
@@ -50,6 +51,7 @@
     document.addEventListener('click', function (evt) {
       if (evt.button === 0) {
         successUploadForm.remove();
+        document.removeEventListener('keydown', onEscPressDown);
       }
     });
     var onEscPressDown = function (evt) {
@@ -77,11 +79,11 @@
     window.form.removeDisabled();
     window.map.switchActive();
     adForm.classList.remove('ad-form--disabled');
-    window.load.ads(onSuccessLoadData, onErrorLoadData);
+    window.load.getAds(onSuccessLoadData, onErrorLoadData);
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.upload.form(new FormData(adForm), onSuccessFormUpload, onErrorFormUpload);
+    window.upload.sendForm(new FormData(adForm), onSuccessFormUpload, onErrorFormUpload);
     evt.preventDefault();
   });
 
