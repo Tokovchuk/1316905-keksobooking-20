@@ -98,6 +98,7 @@
     removePins: removePinsFromMap,
     addListenersToMainPin: addListenersToMainPin,
     removeListenersFromMainPin: removeListenersFromMainPin,
+    mainPin: mainPin,
   };
 })();
 

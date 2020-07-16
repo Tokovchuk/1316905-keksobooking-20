@@ -14,6 +14,7 @@
   var LOCATION_MAX_X = 1200;
   var LOCATION_MIN_Y = 130;
   var LOCATION_MAX_Y = 630;
+  var STATUS_OK = 200;
 
   var getRandomInt = function (min, max) {
     min = Math.ceil(min);
@@ -78,5 +79,6 @@
     LOCATION_MAX_X: LOCATION_MAX_X,
     LOCATION_MIN_Y: LOCATION_MIN_Y,
     LOCATION_MAX_Y: LOCATION_MAX_Y,
+    STATUS_OK: STATUS_OK,
   };
 })();
