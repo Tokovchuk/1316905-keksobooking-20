@@ -4,6 +4,7 @@
   var MAIN_PIN_TOP_DEFAULT = 375;
   var adForm = document.querySelector('.ad-form');
   var resetButton = adForm.querySelector('.ad-form__reset');
+  var ads = [];
 
   var onErrorLoadData = function (message) {
     var node = document.createElement('div');
@@ -17,7 +18,21 @@
   };
 
   var onSuccessLoadData = function (data) {
-    window.map.addPins(data);
+    ads = data;
+    window.map.addPins(ads);
+    updatePins();
+  };
+
+  var updatePins = function () {
+    var typeHousing = document.querySelector('#housing-type');
+
+    typeHousing.addEventListener('change', function () {
+      window.map.removePins();
+      var sameTypeHousing = ads.filter(function (ad) {
+        return ad.offer.type === typeHousing.value;
+      });
+      window.map.addPins(sameTypeHousing);
+    });
   };
 
   var onErrorFormUpload = function () {
