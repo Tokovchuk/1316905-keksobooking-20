@@ -4,6 +4,10 @@
   var MAIN_PIN_TOP_DEFAULT = 375;
   var adForm = document.querySelector('.ad-form');
   var resetButton = adForm.querySelector('.ad-form__reset');
+  var typeHousing = document.querySelector('#housing-type');
+  var priceHousing = document.querySelector('#housing-price');
+  var roomsHousing = document.querySelector('#housing-rooms');
+  var guestsHousing = document.querySelector('#housing-guests');
   var ads = [];
 
   var onErrorLoadData = function (message) {
@@ -20,20 +24,79 @@
   var onSuccessLoadData = function (data) {
     ads = data;
     window.map.addPins(ads);
-    updatePins();
   };
 
-  var updatePins = function () {
-    var typeHousing = document.querySelector('#housing-type');
-
-    typeHousing.addEventListener('change', function () {
-      window.map.removePins();
+  var updatePinsByType = function () {
+    window.map.removePins();
+    if (document.querySelector('.popup')) {
+      document.querySelector('.popup').remove();
+    }
+    if (typeHousing.value === 'any') {
+      window.map.addPins(ads);
+    } else {
       var sameTypeHousing = ads.filter(function (ad) {
         return ad.offer.type === typeHousing.value;
       });
       window.map.addPins(sameTypeHousing);
-    });
+    }
   };
+
+  var updatePinsByRooms = function () {
+    window.map.removePins();
+    if (document.querySelector('.popup')) {
+      document.querySelector('.popup').remove();
+    }
+    if (roomsHousing.value === 'any') {
+      window.map.addPins(ads);
+    } else {
+      var sameRoomsHousing = ads.filter(function (ad) {
+        return ad.offer.rooms === parseInt(roomsHousing.value, 10);
+      });
+      window.map.addPins(sameRoomsHousing);
+    }
+  };
+
+  var updatePinsByGuests = function () {
+    window.map.removePins();
+    if (document.querySelector('.popup')) {
+      document.querySelector('.popup').remove();
+    }
+    if (guestsHousing.value === 'any') {
+      window.map.addPins(ads);
+    } else {
+      var sameGuestsHousing = ads.filter(function (ad) {
+        return ad.offer.guests === parseInt(guestsHousing.value, 10);
+      });
+      window.map.addPins(sameGuestsHousing);
+    }
+  };
+
+  var updatePinsByPrice = function () {
+    window.map.removePins();
+    if (document.querySelector('.popup')) {
+      document.querySelector('.popup').remove();
+    }
+    if (priceHousing.value === 'any') {
+      window.map.addPins(ads);
+    } else {
+      var samePriceHousing = ads.filter(function (ad) {
+        switch (priceHousing.value) {
+          case 'low':
+            return ad.offer.price < 10000;
+          case 'high':
+            return ad.offer.price > 50000;
+          case 'medium':
+            return ad.offer.price >= 10000 && ad.offer.price <= 50000; // Не пойму, почему эта строчка не отрабатывает?
+        }
+      });
+      window.map.addPins(samePriceHousing);
+    }
+  };
+
+  typeHousing.addEventListener('change', updatePinsByType);
+  priceHousing.addEventListener('change', updatePinsByPrice);
+  roomsHousing.addEventListener('change', updatePinsByRooms);
+  guestsHousing.addEventListener('change', updatePinsByGuests);
 
   var onErrorFormUpload = function () {
     var errorUploadForm = document.querySelector('#error')
