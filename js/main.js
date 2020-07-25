@@ -26,77 +26,74 @@
     window.map.addPins(ads);
   };
 
-  var updatePinsByType = function () {
+  var changeSelectType = function () {
     window.map.removePins();
     if (document.querySelector('.popup')) {
       document.querySelector('.popup').remove();
     }
-    if (typeHousing.value === 'any') {
-      window.map.addPins(ads);
-    } else {
-      var sameTypeHousing = ads.filter(function (ad) {
-        return ad.offer.type === typeHousing.value;
-      });
-      window.map.addPins(sameTypeHousing);
-    }
+    var TypesHousing = ads.filter(function (ad) {
+      if (typeHousing.value === 'any') {
+        return true;
+      }
+      return ad.offer.type === typeHousing.value;
+    });
+    window.map.addPins(TypesHousing);
   };
 
-  var updatePinsByRooms = function () {
+  var changeSelectRooms = function () {
     window.map.removePins();
     if (document.querySelector('.popup')) {
       document.querySelector('.popup').remove();
     }
-    if (roomsHousing.value === 'any') {
-      window.map.addPins(ads);
-    } else {
-      var sameRoomsHousing = ads.filter(function (ad) {
-        return ad.offer.rooms === parseInt(roomsHousing.value, 10);
-      });
-      window.map.addPins(sameRoomsHousing);
-    }
+    var RoomsHousing = ads.filter(function (ad) {
+      if (roomsHousing.value === 'any') {
+        return true;
+      }
+      return ad.offer.rooms === parseInt(roomsHousing.value, 10);
+    });
+    window.map.addPins(RoomsHousing);
   };
 
-  var updatePinsByGuests = function () {
+  var changeSelectGuests = function () {
     window.map.removePins();
     if (document.querySelector('.popup')) {
       document.querySelector('.popup').remove();
     }
-    if (guestsHousing.value === 'any') {
-      window.map.addPins(ads);
-    } else {
-      var sameGuestsHousing = ads.filter(function (ad) {
-        return ad.offer.guests === parseInt(guestsHousing.value, 10);
-      });
-      window.map.addPins(sameGuestsHousing);
-    }
+    var GuestsHousing = ads.filter(function (ad) {
+      if (guestsHousing.value === 'any') {
+        return true;
+      }
+      return ad.offer.guests === parseInt(guestsHousing.value, 10);
+    });
+    window.map.addPins(GuestsHousing);
   };
 
-  var updatePinsByPrice = function () {
+  var changeSelectPrice = function () {
     window.map.removePins();
     if (document.querySelector('.popup')) {
       document.querySelector('.popup').remove();
     }
-    if (priceHousing.value === 'any') {
-      window.map.addPins(ads);
-    } else {
-      var samePriceHousing = ads.filter(function (ad) {
-        switch (priceHousing.value) {
-          case 'low':
-            return ad.offer.price < 10000;
-          case 'high':
-            return ad.offer.price > 50000;
-          case 'medium':
-            return ad.offer.price >= 10000 && ad.offer.price <= 50000; // Не пойму, почему эта строчка не отрабатывает?
-        }
-      });
-      window.map.addPins(samePriceHousing);
-    }
+    var PricesHousing = ads.filter(function (ad) {
+      if (priceHousing.value === 'any') {
+        return true;
+      }
+      switch (priceHousing.value) {
+        case 'low':
+          return ad.offer.price < 10000;
+        case 'high':
+          return ad.offer.price > 50000;
+        case 'medium':
+          return ad.offer.price >= 10000 && ad.offer.price <= 50000; // Не пойму, почему эта строчка не отрабатывает?
+      }
+      return false;
+    });
+    window.map.addPins(PricesHousing);
   };
 
-  typeHousing.addEventListener('change', updatePinsByType);
-  priceHousing.addEventListener('change', updatePinsByPrice);
-  roomsHousing.addEventListener('change', updatePinsByRooms);
-  guestsHousing.addEventListener('change', updatePinsByGuests);
+  typeHousing.addEventListener('change', changeSelectType);
+  priceHousing.addEventListener('change', changeSelectPrice);
+  roomsHousing.addEventListener('change', changeSelectRooms);
+  guestsHousing.addEventListener('change', changeSelectGuests);
 
   var onErrorFormUpload = function () {
     var errorUploadForm = document.querySelector('#error')
