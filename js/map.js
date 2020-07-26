@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var LOCATION_MIN_X = 0;
+  var LOCATION_MAX_X = 1200;
+  var LOCATION_MIN_Y = 130;
+  var LOCATION_MAX_Y = 630;
   var MAIN_MAP_PIN_WIDTH_ACTIVE = 65;
   var MAIN_MAP_PIN_HEIGHT_ACTIVE = 84;
   var ADS_NUMBER = 5;
@@ -55,12 +59,12 @@
           x: moveEvt.clientX,
           y: moveEvt.clientY
         };
-        if (parseInt(mainPin.style.left, 10) - shift.x >= window.data.LOCATION_MIN_X - Math.round(MAIN_MAP_PIN_WIDTH_ACTIVE / 2) &&
-            parseInt(mainPin.style.left, 10) - shift.x <= window.data.LOCATION_MAX_X - Math.round(MAIN_MAP_PIN_WIDTH_ACTIVE / 2)) {
+        if (parseInt(mainPin.style.left, 10) - shift.x >= LOCATION_MIN_X - Math.round(MAIN_MAP_PIN_WIDTH_ACTIVE / 2) &&
+            parseInt(mainPin.style.left, 10) - shift.x <= LOCATION_MAX_X - Math.round(MAIN_MAP_PIN_WIDTH_ACTIVE / 2)) {
           mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
         }
-        if (parseInt(mainPin.style.top, 10) - shift.y >= window.data.LOCATION_MIN_Y - MAIN_MAP_PIN_HEIGHT_ACTIVE &&
-            parseInt(mainPin.style.top, 10) - shift.y <= window.data.LOCATION_MAX_Y - MAIN_MAP_PIN_HEIGHT_ACTIVE) {
+        if (parseInt(mainPin.style.top, 10) - shift.y >= LOCATION_MIN_Y - MAIN_MAP_PIN_HEIGHT_ACTIVE &&
+            parseInt(mainPin.style.top, 10) - shift.y <= LOCATION_MAX_Y - MAIN_MAP_PIN_HEIGHT_ACTIVE) {
           mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
         }
         window.form.addAddressInActive();
