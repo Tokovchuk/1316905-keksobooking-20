@@ -4,6 +4,13 @@
   var MAIN_PIN_TOP_DEFAULT = 375;
   var adForm = document.querySelector('.ad-form');
   var resetButton = adForm.querySelector('.ad-form__reset');
+  var filterHousing = document.querySelector('.map__filters');
+  var typeHousing = document.querySelector('#housing-type');
+  var roomsHousing = document.querySelector('#housing-rooms');
+  var guestsHousing = document.querySelector('#housing-guests');
+  var priceHousing = document.querySelector('#housing-price');
+  var checkedFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
+  var ads = [];
 
   var onErrorLoadData = function (message) {
     var node = document.createElement('div');
@@ -17,8 +24,63 @@
   };
 
   var onSuccessLoadData = function (data) {
-    window.map.addPins(data);
+    ads = data;
+    window.map.addPins(ads);
   };
+
+  var onFilterChange = function () {
+    window.map.removePins();
+    if (document.querySelector('.popup')) {
+      document.querySelector('.popup').remove();
+    }
+    var filterByType = function (ad) {
+      if (typeHousing.value === 'any') {
+        return true;
+      }
+      return ad.offer.type === typeHousing.value;
+    };
+    var filterByRooms = function (ad) {
+      if (roomsHousing.value === 'any') {
+        return true;
+      }
+      return ad.offer.rooms === parseInt(roomsHousing.value, 10);
+    };
+    var filterByGuests = function (ad) {
+      if (guestsHousing.value === 'any') {
+        return true;
+      }
+      return ad.offer.guests === parseInt(guestsHousing.value, 10);
+    };
+    var filterByPrice = function (ad) {
+      if (priceHousing.value === 'any') {
+        return true;
+      }
+      switch (priceHousing.value) {
+        case 'low':
+          return ad.offer.price < 10000;
+        case 'high':
+          return ad.offer.price > 50000;
+        case 'middle':
+          return ad.offer.price >= 10000 && ad.offer.price <= 50000;
+      }
+      return false;
+    };
+    var filterByFeatures = function (ad) {
+      return checkedFeatures.every(function (checkedFeature) {
+        return ad.offer.features.includes(checkedFeature.value);
+      });
+    };
+    var filterAds = ads.filter(function (ad) {
+      return filterByType(ad) &&
+        filterByPrice(ad) &&
+        filterByRooms(ad) &&
+        filterByGuests(ad) &&
+        filterByFeatures(ad);
+    });
+    window.map.addPins(filterAds);
+  };
+
+  filterHousing.addEventListener('change', onFilterChange);
 
   var onErrorFormUpload = function () {
     var errorUploadForm = document.querySelector('#error')

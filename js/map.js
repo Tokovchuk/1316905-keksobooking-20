@@ -3,7 +3,7 @@
 (function () {
   var MAIN_MAP_PIN_WIDTH_ACTIVE = 65;
   var MAIN_MAP_PIN_HEIGHT_ACTIVE = 84;
-  var ADS_NUMBER = 8;
+  var ADS_NUMBER = 5;
 
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
@@ -99,6 +99,7 @@
     addListenersToMainPin: addListenersToMainPin,
     removeListenersFromMainPin: removeListenersFromMainPin,
     mainPin: mainPin,
+    pins: mapPins,
   };
 })();
 
