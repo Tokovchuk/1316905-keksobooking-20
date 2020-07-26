@@ -9,7 +9,6 @@
   var roomsHousing = document.querySelector('#housing-rooms');
   var guestsHousing = document.querySelector('#housing-guests');
   var priceHousing = document.querySelector('#housing-price');
-  var checkedFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
   var ads = [];
 
   var onErrorLoadData = function (message) {
@@ -66,6 +65,7 @@
       return false;
     };
     var filterByFeatures = function (ad) {
+      var checkedFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
       return checkedFeatures.every(function (checkedFeature) {
         return ad.offer.features.includes(checkedFeature.value);
       });
@@ -77,8 +77,9 @@
         filterByGuests(ad) &&
         filterByFeatures(ad);
     });
-    window.map.addPins(filterAds);
+    updatePins(filterAds);
   };
+  var updatePins = window.debounce(window.map.addPins);
 
   filterHousing.addEventListener('change', onFilterChange);
 
