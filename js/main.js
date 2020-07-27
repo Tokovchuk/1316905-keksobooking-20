@@ -129,17 +129,18 @@
   var switchToDisableSite = function () {
     window.form.addDisabled();
     window.map.addListenersToMainPin();
-    window.form.addAddressInDisable();
     window.map.switchDisable();
     window.map.removePins();
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
+    window.form.addAddressInDisable();
     window.map.mainPin.style.top = MAIN_PIN_TOP_DEFAULT + 'px';
     window.map.mainPin.style.left = MAIN_PIN_LEFT_DEFAULT + 'px';
   };
 
   var switchToActiveSite = function () {
     window.form.removeDisabled();
+    window.form.addAddressInActive();
     window.map.switchActive();
     adForm.classList.remove('ad-form--disabled');
     window.load.getAds(onSuccessLoadData, onErrorLoadData);
@@ -152,7 +153,7 @@
 
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
-    adForm.reset();
+    switchToDisableSite();
   });
 
   switchToDisableSite();
