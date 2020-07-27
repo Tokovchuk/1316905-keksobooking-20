@@ -10,6 +10,8 @@
   var roomNumber = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
   var mainPin = document.querySelector('.map__pin--main');
+  var typeHousing = document.querySelector('#type');
+  var priceHousing = document.querySelector('#price');
 
   var roomsAndCapacity = {
     // rooms: capacity
@@ -65,6 +67,22 @@
     }
   };
 
+  var checkPrice = function () {
+    if (priceHousing.value < parseInt((/\d+/).exec(priceHousing.placeholder)[0], 10)) {
+      priceHousing.setCustomValidity('Проверьте цену, она не должна быть меньше ' + parseInt((/\d+/).exec(priceHousing.placeholder)[0], 10));
+    } else {
+      priceHousing.setCustomValidity('');
+    }
+  };
+
+  var editPrice = function () {
+    if (priceHousing.value < 0) {
+      priceHousing.value = Math.abs(priceHousing.value);
+    }
+  };
+
+  priceHousing.addEventListener('input', editPrice);
+
   var addValidateRoomsAndGuests = function () {
     roomNumber.addEventListener('change', onInputRoomsOrGuestsChange);
     capacity.addEventListener('change', onInputRoomsOrGuestsChange);
@@ -84,8 +102,7 @@
   };
 
   var addValidateTypeAndPriceHousing = function () {
-    var typeHousing = document.querySelector('#type');
-    var priceHousing = document.querySelector('#price');
+    checkPrice();
     typeHousing.addEventListener('change', function () {
       if (typeHousing.value === 'bungalo') {
         priceHousing.placeholder = 'Минимум 0';
@@ -103,6 +120,7 @@
         priceHousing.placeholder = 'Минимум 10000';
         priceHousing.min = 10000;
       }
+      checkPrice();
     });
   };
 

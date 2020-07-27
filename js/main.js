@@ -144,6 +144,7 @@
     window.map.switchActive();
     adForm.classList.remove('ad-form--disabled');
     window.load.getAds(onSuccessLoadData, onErrorLoadData);
+    // window.form.onChangeTypeHousing();
   };
 
   adForm.addEventListener('submit', function (evt) {
