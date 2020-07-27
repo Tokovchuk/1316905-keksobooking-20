@@ -68,8 +68,8 @@
   };
 
   var checkPrice = function () {
-    if (priceHousing.value < parseInt((/\d+/).exec(priceHousing.placeholder)[0], 10)) {
-      priceHousing.setCustomValidity('Проверьте цену, она не должна быть меньше ' + parseInt((/\d+/).exec(priceHousing.placeholder)[0], 10));
+    if (parseInt(priceHousing.value, 10) < parseInt(priceHousing.min, 10)) {
+      priceHousing.setCustomValidity('Проверьте цену, она не должна быть меньше ' + parseInt(priceHousing.min, 10));
     } else {
       priceHousing.setCustomValidity('');
     }
@@ -102,22 +102,21 @@
   };
 
   var addValidateTypeAndPriceHousing = function () {
-    checkPrice();
     typeHousing.addEventListener('change', function () {
       if (typeHousing.value === 'bungalo') {
-        priceHousing.placeholder = 'Минимум 0';
+        priceHousing.placeholder = '0';
         priceHousing.min = 0;
       }
       if (typeHousing.value === 'flat') {
-        priceHousing.placeholder = 'Минимум 1000';
+        priceHousing.placeholder = '1000';
         priceHousing.min = 1000;
       }
       if (typeHousing.value === 'house') {
-        priceHousing.placeholder = 'Минимум 5000';
+        priceHousing.placeholder = '5000';
         priceHousing.min = 5000;
       }
       if (typeHousing.value === 'palace') {
-        priceHousing.placeholder = 'Минимум 10000';
+        priceHousing.placeholder = '10000';
         priceHousing.min = 10000;
       }
       checkPrice();
@@ -132,5 +131,6 @@
     addValidateRoomsAndGuests: addValidateRoomsAndGuests,
     addSyncCheckinAndCheckout: addSyncCheckinAndCheckout,
     addValidateTypeAndPriceHousing: addValidateTypeAndPriceHousing,
+    checkPrice: checkPrice,
   };
 })();
